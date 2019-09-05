@@ -16,3 +16,8 @@ run:
 clean:
 	rm -rf bin
 
+.PHONY: docker
+docker:
+	sed 's/%%BALENA_MACHINE_NAME%%/amd64/' Dockerfile \
+	| docker build -
+

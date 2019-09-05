@@ -1,4 +1,4 @@
-FROM library/golang:latest as build
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-golang:latest as build
 
 WORKDIR /src
 COPY . .
