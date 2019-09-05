@@ -1,0 +1,17 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-golang:latest as build
+
+WORKDIR /src
+ENV GO111MODULES=on
+COPY go.mod ./.
+COPY go.sum ./.
+RUN go mod download
+
+COPY main.go ./.
+RUN CGO_ENABLED=0 go build -tags netgo -o /disglair
+
+FROM scratch
+ENTRYPOINT ["/disglair"]
+
+COPY files/slack_com.crt /etc/ssl/certs/slack_com.crt
+COPY --from=build /disglair /disglair
+

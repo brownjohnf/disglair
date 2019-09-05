@@ -14,10 +14,11 @@ run:
 	&& CGO_ENABLED=0 go run main.go
 
 clean:
-	rm -rf bin
+	rm -rf bin build
 
 .PHONY: docker
 docker:
-	sed 's/%%BALENA_MACHINE_NAME%%/amd64/' Dockerfile \
-	| docker build -
+	mkdir -p build
+	sed 's/%%BALENA_MACHINE_NAME%%/amd64/' Dockerfile.template > build/Dockerfile
+	docker build -f build/Dockerfile .
 

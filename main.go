@@ -8,6 +8,33 @@ import (
 	"github.com/nlopes/slack"
 )
 
+const device = "/dev/fb1"
+
+var pixels = make([]byte, 128)
+
+func init() {
+	fb, err := os.OpenFile(device, os.O_RDWR, 0660)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%08b\n", pixels)
+	written, err := fb.WriteAt(pixels, 0)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(written)
+
+	pixels[0] = 255
+	pixels[1] = 255
+	fmt.Printf("%08b\n", pixels)
+	written, err = fb.WriteAt(pixels, 0)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(written)
+}
+
 func main() {
 	fmt.Println("running...")
 
